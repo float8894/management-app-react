@@ -1,11 +1,18 @@
 import Input from './Input';
 
-export default function NewProject() {
+export default function NewProject({ onCancelNewProject }) {
+  const titleRef = useRef();
+  const descriptionRef = useRef();
+  const dueDateRef = useRef();
+
   return (
     <div className='w-[35rem] mt-16'>
       <menu className='flex items-center justify-end gap-4 my-4'>
         <li>
-          <button className='text-stone-800 hover:text-stone-950'>
+          <button
+            onClick={onCancelNewProject}
+            className='text-stone-800 hover:text-stone-950'
+          >
             Cancel
           </button>
         </li>
@@ -16,9 +23,14 @@ export default function NewProject() {
         </li>
       </menu>
       <div>
-        <Input label='Title'></Input>
-        <Input label='Description' textarea></Input>
-        <Input label='Due Date'></Input>
+        <Input ref={titleRef} type='text' label='Title'></Input>
+        <Input
+          ref={descriptionRef}
+          type='text'
+          label='Description'
+          textarea
+        ></Input>
+        <Input ref={dueDateRef} type='date' label='Due Date'></Input>
       </div>
     </div>
   );
