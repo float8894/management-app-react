@@ -22,6 +22,39 @@ function App() {
     });
   }
 
+  function onCreateProject(title, description, dueDate) {
+    console.log({ title, description, dueDate });
+    if (!localStorage.getItem('projects')) {
+      const projects = [];
+      const project = {
+        id: 1,
+        title,
+        description,
+        dueDate,
+      };
+      projects.push(project);
+      localStorage.setItem('projects', JSON.stringify(projects));
+    } else {
+      const projects = JSON.parse(localStorage.getItem('projects'));
+      let prevId = projects[projects.length - 1].id;
+      const project = {
+        id: prevId + 1,
+        title,
+        description,
+        dueDate,
+      };
+      projects.push(project);
+      localStorage.setItem('projects', JSON.stringify(projects));
+    }
+    setProjectsState((prevState) => {
+      return {
+        ...prevState,
+        selectedProjectId: undefined,
+        projects: JSON.parse(localStorage.getItem('projects')),
+      };
+    });
+  }
+
   let content;
   if (projectsState.selectedProjectId === undefined)
     content = (
@@ -32,6 +65,7 @@ function App() {
   else if (projectsState.selectedProjectId === null)
     content = (
       <NewProject
+        onCreateProject={onCreateProject}
         onCancelNewProject={handleCancelCreateNewProject}
       ></NewProject>
     );
