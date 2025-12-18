@@ -22,38 +22,18 @@ function App() {
     });
   }
 
-  function onCreateProject(title, description, dueDate) {
-    console.log({ title, description, dueDate });
-    if (!localStorage.getItem('projects')) {
-      const projects = [];
-      const project = {
-        id: 1,
-        title,
-        description,
-        dueDate,
-      };
-      projects.push(project);
-      localStorage.setItem('projects', JSON.stringify(projects));
-    } else {
-      const projects = JSON.parse(localStorage.getItem('projects'));
-      let prevId = projects[projects.length - 1].id;
-      const project = {
-        id: prevId + 1,
-        title,
-        description,
-        dueDate,
-      };
-      projects.push(project);
-      localStorage.setItem('projects', JSON.stringify(projects));
-    }
+  function handleAddProject(projectData) {
     setProjectsState((prevState) => {
+      const newProject = { ...projectData, id: Math.random() };
       return {
         ...prevState,
         selectedProjectId: undefined,
-        projects: JSON.parse(localStorage.getItem('projects')),
+        projects: [...prevState.projects, newProject],
       };
     });
   }
+
+  console.log(projectsState);
 
   let content;
   if (projectsState.selectedProjectId === undefined)
@@ -65,13 +45,14 @@ function App() {
   else if (projectsState.selectedProjectId === null)
     content = (
       <NewProject
-        onCreateProject={onCreateProject}
+        onAdd={handleAddProject}
         onCancelNewProject={handleCancelCreateNewProject}
       ></NewProject>
     );
   return (
     <main className='h-screen my-8 flex gap-8'>
       <ProjectsSideBar
+        projects={projectsState.projects}
         onCreateNewProject={handleStartAddProject}
       ></ProjectsSideBar>
 
