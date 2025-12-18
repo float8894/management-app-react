@@ -59,7 +59,7 @@ function App() {
   let content = (
     <SelectedProject
       project={selectedProject}
-      onDeleteProject={handleDeleteProject}
+      onDelete={handleDeleteProject}
     ></SelectedProject>
   );
 
@@ -80,6 +80,7 @@ function App() {
     <main className='h-screen my-8 flex gap-8'>
       <ProjectsSideBar
         projects={projectsState.projects}
+        selectedProjectId={projectsState.selectedProjectId}
         onCreateNewProject={handleStartAddProject}
         onSelectProject={handleSelectProject}
       ></ProjectsSideBar>
